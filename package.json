@@ -1,0 +1,27 @@
+{
+  "name": "epub-cover-extractor",
+  "version": "1.0.0",
+  "homepage": "https://github.com/swestmoreland/epub-cover-extractor",
+  "author": "Steven Westmoreland",
+  "description": "Extract cover images from ePub documents.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swestmoreland/epub-cover-extractor.git"
+  },
+  "keywords": [
+    "epub",
+    "extract",
+    "cover",
+    "image"
+  ],
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "xml2js": "^0.4.18",
+    "yauzl": "^2.8.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "main": "index.js"
+}
