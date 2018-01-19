@@ -2,6 +2,8 @@
 
 Use this node module to extract cover images from ePub documents.
 
+[![npm](https://img.shields.io/npm/v/epub-cover-extractor.svg?style=flat-square)](https://www.npmjs.com/package/epub-cover-extractor)
+
 ## Installation
 
 ```sh
