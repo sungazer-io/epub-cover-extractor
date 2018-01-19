@@ -1,6 +1,6 @@
 {
   "name": "epub-cover-extractor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/swestmoreland/epub-cover-extractor",
   "author": "Steven Westmoreland",
   "description": "Extract cover images from ePub documents.",
