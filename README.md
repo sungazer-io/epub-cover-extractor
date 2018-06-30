@@ -3,8 +3,8 @@
 <p align="center">Extract cover images from ePub documents.</p>
 
 <p align="center">
-  <a href="https://badge.fury.io/js/epub-cover-extracgtor">
-    <img src="https://badge.fury.io/js/epub-cover-extracgtor.svg" alt="npm version badge">
+  <a href="https://badge.fury.io/js/epub-cover-extractor">
+    <img src="https://badge.fury.io/js/epub-cover-extractor.svg" alt="npm version badge">
   </a>
 </p>
 
