@@ -47,15 +47,15 @@ function fromBufferToBuffer(buffer, cb) {
 
         yauzl.fromBuffer(buffer, {lazyEntries: true}, function(err, zipfile) {
 
-            if (err) return cb(err, null);
+            if (err) return cb(err, null, null);
 
             readEntriesForOPF(zipfile, function(err, coverPath) {
 
-                if (err) return cb(err, null);
+                if (err) return cb(err, null, null);
 
                 yauzl.fromBuffer(buffer, {lazyEntries: true}, function(err, zipfile) {
 
-                    if (err) return cb(err, null);
+                    if (err) return cb(err, null, null);
 
                     extractCoverToBuffer(zipfile, coverPath, cb);
 
@@ -162,7 +162,6 @@ function extractCoverToBuffer(zipfile, coverPath, cb) {
 
             zipfile.openReadStream(entry, function(err, readStream) {
 
-                var writeStream = fs.createWriteStream(writePath);
 
                 var buffers =[];
 
