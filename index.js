@@ -162,16 +162,15 @@ function extractCoverToBuffer(zipfile, coverPath, cb) {
 
             zipfile.openReadStream(entry, function(err, readStream) {
 
-
-                var buffers =[];
+                const buffers = [];
 
                 readStream.on("data", function(data) {
                     buffers.push(data);
                 });
 
                 readStream.on('end', function() {
-                    var content = buffers.concat();
-                    cb(null, concat, path.basename(coverPath));
+                    const content = buffers.concat();
+                    cb(null, content, path.basename(coverPath));
 
                     zipfile.close();
 
