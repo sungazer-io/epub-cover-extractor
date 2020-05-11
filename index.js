@@ -47,15 +47,15 @@ function fromBufferToBuffer(buffer, cb) {
 
         yauzl.fromBuffer(buffer, {lazyEntries: true}, function(err, zipfile) {
 
-            if (err) return cb(err, null, null);
+            if (err) return cb(err, null);
 
             readEntriesForOPF(zipfile, function(err, coverPath) {
 
-                if (err) return cb(err, null, null);
+                if (err) return cb(err, null);
 
                 yauzl.fromBuffer(buffer, {lazyEntries: true}, function(err, zipfile) {
 
-                    if (err) return cb(err, null, null);
+                    if (err) return cb(err, null);
 
                     extractCoverToBuffer(zipfile, coverPath, cb);
 
@@ -170,7 +170,7 @@ function extractCoverToBuffer(zipfile, coverPath, cb) {
 
                 readStream.on('end', function() {
                     const content = buffers.concat();
-                    cb(null, content, path.basename(coverPath));
+                    cb(null, {content, filename: path.basename(coverPath)});
 
                     zipfile.close();
 
