@@ -5,7 +5,7 @@ var _     = require('lodash'),
     parse = require('xml2js').parseString,
     yauzl = require('yauzl');
 
-function fromBuffer(buffer, savePath, cb) {
+function fromBufferToFile(buffer, savePath, cb) {
 
     if (buffer && buffer instanceof Buffer && typeof savePath === 'string' && typeof cb === 'function') {
 
@@ -21,7 +21,43 @@ function fromBuffer(buffer, savePath, cb) {
 
                     if (err) return cb(err, null);
 
-                    extractCover(zipfile, coverPath, savePath, cb);
+                    extractCoverToFile(zipfile, coverPath, savePath, cb);
+
+                });
+
+            });
+
+        });
+
+    } else {
+
+        if( typeof cb === 'function' ) {
+            cb( new Error('Incorrect parameters.'), null);
+        } else {
+            console.error('Incorrect parameters.');
+        }
+
+    }
+
+}
+
+function fromBufferToBuffer(buffer, cb) {
+
+    if (buffer && buffer instanceof Buffer && typeof cb === 'function') {
+
+        yauzl.fromBuffer(buffer, {lazyEntries: true}, function(err, zipfile) {
+
+            if (err) return cb(err, null);
+
+            readEntriesForOPF(zipfile, function(err, coverPath) {
+
+                if (err) return cb(err, null);
+
+                yauzl.fromBuffer(buffer, {lazyEntries: true}, function(err, zipfile) {
+
+                    if (err) return cb(err, null);
+
+                    extractCoverToBuffer(zipfile, coverPath, cb);
 
                 });
 
@@ -57,7 +93,7 @@ function fromFilePath(filePath, savePath, cb) {
 
                     if (err) return cb(err, null);
 
-                    extractCover(zipfile, coverPath, savePath, cb);
+                    extractCoverToFile(zipfile, coverPath, savePath, cb);
 
                 });
 
@@ -77,8 +113,7 @@ function fromFilePath(filePath, savePath, cb) {
 
 }
 
-function extractCover(zipfile, coverPath, savePath, cb) {
-
+function extractCoverToFile(zipfile, coverPath, savePath, cb) {
     zipfile.readEntry();
 
     zipfile.on('end', function() {
@@ -103,6 +138,45 @@ function extractCover(zipfile, coverPath, savePath, cb) {
                 });
 
                 readStream.pipe(writeStream);
+
+            });
+
+        } else {
+            zipfile.readEntry();
+        }
+
+    });
+}
+
+function extractCoverToBuffer(zipfile, coverPath, cb) {
+
+    zipfile.readEntry();
+
+    zipfile.on('end', function() {
+        cb( new Error('Cover image not found.'), null);
+    });
+
+    zipfile.on('entry', function(entry) {
+
+        if (entry.fileName.match(coverPath)) {
+
+            zipfile.openReadStream(entry, function(err, readStream) {
+
+                var writeStream = fs.createWriteStream(writePath);
+
+                var buffers =[];
+
+                readStream.on("data", function(data) {
+                    buffers.push(data);
+                });
+
+                readStream.on('end', function() {
+                    var content = buffers.concat();
+                    cb(null, concat, path.basename(coverPath));
+
+                    zipfile.close();
+
+                });
 
             });
 
@@ -204,6 +278,7 @@ function readEntryStreamForOPF(zipfile, entry, cb) {
 }
 
 module.exports = {
-    fromBuffer: fromBuffer,
+    fromBuffertoFile: fromBufferToFile,
+    fromBufferToBuffer: fromBufferToBuffer,
     fromFilePath: fromFilePath
 }
